@@ -5,12 +5,29 @@ use Think\Controller;
 class MovieController extends Controller {
     public function add()
     {
+        $isGood = 0;
+        if (strstr(I('requestUrl'), 'dyzz')) {
+            $isGood = 1;
+        }
+
         $movie = array(
             'name' => I('name'),
             'cover' => I('cover'),
             'image' => I('image'),
-            'introduction' => I('introduction'),
+            'introduction' => str_replace('&amp;middot;', '·', I('introduction')),
             'download' => I('download'),
+            'realname' => trim(I('realname'), '　'),
+            'year' => trim(I('year'), '　'),
+            'place' => trim(I('place'), '　'),
+            'category' => trim(I('category'), '　'),
+            'language' => trim(I('language'), '　'),
+            'subtitle' => trim(I('subtitle'), '　'),
+            'file_format' => trim(I('file_format'), '　'),
+            'video_size' => trim(I('video_size'), '　'),
+            'film_length' => trim(I('film_length'), '　'),
+            'director' => trim(str_replace('&amp;middot;', '·', str_replace('&lt;br /&gt;　　　　　', ',', I('director'))), '　'),
+            'cast' => trim(str_replace('&amp;middot;', '·', str_replace('&lt;br /&gt;　　　　　', ',', I('cast'))), '　'),
+            'is_good' => $isGood,
         );
 
         $result = D('Movies')->add($movie);
