@@ -28,6 +28,7 @@ class MovieController extends Controller {
             'director' => trim(str_replace('&amp;middot;', '·', str_replace('&lt;br /&gt;　　　　　', ',', I('director'))), '　'),
             'cast' => trim(str_replace('&amp;middot;', '·', str_replace('&lt;br /&gt;　　　　　', ',', I('cast'))), '　'),
             'is_good' => $isGood,
+	    'douban_score' => trim(I('doubanScore'), '　'),
         );
 
         $result = D('Movies')->add($movie);
