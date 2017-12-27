@@ -49,7 +49,7 @@ with request.urlopen(req) as f:
         IMDbScore = ''
     else:
         IMDbScore = IMDbScore[0]
-    doubanScore = re.findall(r'豆瓣评分(.*?)"', data)
+    doubanScore = re.findall(r'豆瓣评分(.*?)/10', data)
     if len(doubanScore) == 0:
         doubanScore = ''
     else:
@@ -87,6 +87,7 @@ login_data = parse.urlencode([
     ('filmLength', filmLength),
     ('director', director),
     ('cast', cast),
+    ('doubanScore', doubanScore),
     ('requestUrl', requestUrl)
 ])
 
