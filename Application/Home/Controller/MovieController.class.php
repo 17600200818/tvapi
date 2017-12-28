@@ -61,4 +61,38 @@ class MovieController extends Controller {
             }
         }
     }
+
+    public function getThunder()
+    {
+        $i = 1;
+        $url = 'https://tool.lu/urlconvert/ajax.html';
+
+        $movies = D('Movies')->field('id, download')->where('`thunder` is null')->select();
+        foreach ($movies as $movie) {
+            $data = array('link' => $movie['download']);
+            $response = $this->curlPost($url, $data);
+            $thunder = $response['text']['thunder'];
+
+            D('Movies')->where('id = '.$movie['id'])->save(['thunder'=> $thunder]);
+            echo $movie['id'].'/////'.$i++."</br>";
+        }
+    }
+
+    public function curlPost($url, $post_data)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // post数据
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        //打印获得的数据
+        return json_decode($output, true);
+    }
 }

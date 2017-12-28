@@ -18,8 +18,13 @@ with request.urlopen(req) as f:
     name = name[0]
     img = re.findall(r'(http.*?jpg)', data)
     cover = img[0]
-    image = img[1]
+    if len(cover) == 2:
+        image = img[1]
+    else:
+        image = ""
     introduction = re.findall(r'介 <br /><br />(.*?)<br /><br />', data)
+    if len(introduction) == 0:
+        introduction = re.findall(r'介</p>\r\n<p>((.|\n)*?)<strong>', data)
     if len(introduction) == 0:
         introduction = re.findall(r'简　　介(.*?)img', data)
     introduction = introduction[0]
@@ -66,6 +71,8 @@ with request.urlopen(req) as f:
     director = re.findall(r'导　　演(.*?)<br', data)
     director = director[0]
     cast = re.findall(r'主　　演(.*?)<br /><br />', data)
+    if len(cast) == 0:
+        cast = re.findall(r'主　　演(.*?)</p>\r\n<p>', data)
     cast = cast[0]
 
 login_data = parse.urlencode([
